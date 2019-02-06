@@ -147,7 +147,52 @@ public class FirstTest {
         );
 
     }
-  
+
+    @Test
+    public void testFindAndCancelSearch()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Android",
+                "Cannot find search input",
+                5
+        );
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']"),
+                "Cannot find results!",
+                15
+        );
+        Boolean result_element = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']")).size()>0;
+
+        Assert.assertTrue(
+                "No results!",
+                result_element
+
+        );
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+        waitForElementNotPesent(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "X is still present on the page",
+                5
+        );
+
+    }
+
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
