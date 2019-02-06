@@ -162,18 +162,13 @@ public class FirstTest {
                 "Cannot find search input",
                 5
         );
-        waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']"),
+        WebElement result = waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
                 "Cannot find results!",
                 15
         );
-        Boolean result_element = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']")).size()>0;
+        Assert.assertTrue("Only one search result", getResultsList().size() > 1);
 
-        Assert.assertTrue(
-                "No results!",
-                result_element
-
-        );
         waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
                 "Cannot find search field",
@@ -242,5 +237,8 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by, error_message,timeoutInSeconds);
         element.click();
         return element;
+    }
+    private List<WebElement> getResultsList() {
+        return driver.findElements(By.id("org.wikipedia:id/page_list_item_container"));
     }
 }
