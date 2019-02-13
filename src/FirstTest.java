@@ -493,6 +493,196 @@ public class FirstTest {
                 5
         );
     }
+    @Test
+    public void testSavingTwoArticles()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "hhkb",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Happy Hacking Keyboard']"),
+                "Cannot find 'Search wikipedia' input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "1.Cannot find 'More options'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Cannot find button to open article options",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@text='Add to reading list']"),
+                "2.Cannot find 'Add to reading list'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find option to add article to reading list",
+                5
+
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/onboarding_button"),
+                "Cannot find 'Go it' tip overlay",
+                5
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/text_input"),
+                "Cannot find input to set name of article folder",
+                5
+        );
+
+        String name_of_new_folder = "keyboard";
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                name_of_new_folder,
+                "Cannot put text into article folder input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='OK']"),
+                "Cannot press OK button",
+                5
+
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot close article, cannot find X link",
+                5
+
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "FrogPad",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='FrogPad']"),
+                "Cannot find 'Search wikipedia' input in second time",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//android.widget.ImageView[@content-desc='Add this article to a reading list']"),
+                "3.Cannot find button 'Add this article to a reading list'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='Add this article to a reading list']"),
+                "Cannot find button to saved article in folder",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/item_container']//*[@text='keyboard']"),
+                "4.Cannot find 'keyboard' folder",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/item_container']//*[@text='keyboard']"),
+                "Cannot find 'keyboard' folder",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot close second article, cannot find X link",
+                5
+
+        );
+
+        waitForElementPresent(
+                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
+                "5.Cannot find navigation button to My list",
+                5
+
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
+                "Cannot find navigation button to My list",
+                5
+
+        );
+
+        waitForElementPresent(
+                By.xpath("//android.widget.TextView[@text='keyboard']"),
+                "6.Cannot find 'keyboard' folder",
+                5
+
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[@text='keyboard']"),
+                "Cannot find 'keyboard' folder",
+                5
+
+        );
+
+        swipeElementToLeft(
+                By.xpath("//*[@text='FrogPad']"),
+                "Cannot find and swipe saved article 'FrogPad'"
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Happy Hacking Keyboard']"),
+                "Cannot find saved article 'Happy Hacking Keyboard'"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Happy Hacking Keyboard']"),
+                "Cannot find 'Search wikipedia' input",
+                5
+        );
+
+        String saved_title_article = "Happy Hacking Keyboard";
+        waitForElementPresent(
+                By.xpath("//android.widget.TextView[@text='"+saved_title_article+"']"),
+                "Cannot find title article",
+                5
+        );
+
+        Assert.assertEquals(
+                "We see unexpected title!",
+                "Happy Hacking Keyboard",
+                saved_title_article
+        );
+
+    }
 
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
