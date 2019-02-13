@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class FirstTest {
 
@@ -683,6 +684,40 @@ public class FirstTest {
         );
 
     }
+    @Test
+    public void testCheckTitlePresent()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "hhkb",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Happy Hacking Keyboard']"),
+                "Cannot find 'Search wikipedia' input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Happy Hacking Keyboard']"),
+                "Cannot find 'Search wikipedia' input",
+                5
+        );
+
+        String title = "//*[@resource-id='org.wikipedia:id/view_page_title_text'][@text='Happy Hacking Keyboard']";
+        assertElementPresent(
+                By.xpath(title),
+                "Cannot find any title!"
+        );
+    }
 
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
@@ -805,5 +840,21 @@ public class FirstTest {
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private int getTitlePresent(By by)
+    {
+        List title_elements = driver.findElements(by);
+        return title_elements.size();
+    }
+
+    private void assertElementPresent(By by, String error_message)
+    {
+        int title_present = getTitlePresent(by);
+        if (title_present == 0) {
+            String defaultMessage = "Can find title element, '" + by.toString() + "'present";
+            throw new AssertionError(defaultMessage + " " + error_message);
+
+        }
     }
 }
