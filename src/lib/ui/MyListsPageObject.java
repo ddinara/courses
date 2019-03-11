@@ -1,12 +1,16 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
+import org.openqa.selenium.WebElement;
 
-public class MyListsPageObject extends MainPageObject {
 
-    public static final String
-           FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-           ARTICLE_BY_TITLE = "xpath://*[@text='{TITLE}']";
+abstract public class MyListsPageObject extends MainPageObject {
+
+    protected static String
+           FOLDER_BY_NAME_TPL,
+           ARTICLE_BY_TITLE,
+           MY_SAVED_ARTICLE;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -43,25 +47,49 @@ public class MyListsPageObject extends MainPageObject {
 
     public void waitForArticleToAppearByTitle(String article_title)
     {
-        String article_xpath = getFolderXpathByName(article_title);
-        this.waitForElementPresent(article_xpath,"Cannot find saved article by title" + article_title,15);
+        String article_xpath = getSavedArticleXpathByTitle(article_title);
+        this.waitForElementPresent(article_xpath,"Cannot find saved article by title " + article_title,15);
     }
 
     public void waitForArticleToDisappearByTitle(String article_title)
     {
-        String article_xpath = getFolderXpathByName(article_title);
+        String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementNotPesent(article_xpath,"Saved article still present with title" + article_title,15);
     }
 
     public void swipeByArticleToDelete(String article_title)
     {
         this.waitForArticleToAppearByTitle(article_title);
-        String article_xpath = getFolderXpathByName(article_title);
+        String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.swipeElementToLeft(
                 article_xpath,
                 "Cannot find saved article"
         );
+        if(Platform.getInstance().isIOS()){
+            this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find article");
+        }
+
         this.waitForArticleToDisappearByTitle(article_title);
+    }
+
+    public WebElement waitForIdElement()
+    {
+        return this.waitForElementPresent(MY_SAVED_ARTICLE,"Cannot find article on list!",15);
+    }
+
+    public String getArticle()
+    {
+        WebElement id_element = waitForIdElement();
+        return id_element.getAttribute("id");
+    }
+
+    public void openAndCheckMySavedListArticles()
+    {
+        this.waitForElementPresent(
+                MY_SAVED_ARTICLE,
+                "1.Cannot find saved article 'FrogPad'",
+                5
+        );
     }
 
 }
